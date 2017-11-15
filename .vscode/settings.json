@@ -1,0 +1,35 @@
+{
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Monokai",
+    "editor.fontSize": 14,
+    "editor.tabCompletion": true,
+    "todohighlight.isEnable": false,
+    "todohighlight.isCaseSensitive": false,
+    "todohighlight.highlightWholeLine": false,
+    "vsicons.dontShowNewVersionMessage": true,
+    "editor.fontSize": 18,
+    "window.zoomLevel": 1,
+    "editor.minimap.enabled": false,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "workbench.startupEditor": "newUntitledFile",
+    "eslint.enable": true,
+    "eslint-options": {
+        "rules": {
+            "no-console": "off",
+            "import/newline-after-import": "off",
+            "no-unused-vars": 0,
+            "max-len": 0
+        }
+    },
+    "editor.wordWrap": "on",
+    "editor.tabSize": 4,
+    "editor.selectionHighlight": false,
+    "editor.renderLineHighlight": "none",
+    "editor.occurrencesHighlight": false,
+    "editor.cursorStyle": "line",
+    "editor.cursorBlinking": "blink",
+    "workbench.colorCustomizations": {
+        "editor.selectionBackground": "#135564",
+        "editor.selectionHighlightBackground": "#135564"
+    }
+}
