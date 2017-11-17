@@ -8,7 +8,7 @@
     "todohighlight.highlightWholeLine": false,
     "vsicons.dontShowNewVersionMessage": true,
     "editor.fontSize": 18,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "editor.minimap.enabled": false,
     "editor.multiCursorModifier": "ctrlCmd",
     "workbench.startupEditor": "newUntitledFile",

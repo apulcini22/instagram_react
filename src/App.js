@@ -1,5 +1,4 @@
 import React, { Component, cloneElement } from 'react';
-import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import jsonp from 'jsonp';
 import UserProfile from './components/UserProfile';
@@ -13,7 +12,6 @@ const FIRST_CALL = 'https://api.instagram.com/oauth/authorize/?client_id=594a8a9
 const USER_MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
 
 export default class App extends Component {
-  tooltipsEnabled = true;
   constructor() {
     super();
     this.state = {
