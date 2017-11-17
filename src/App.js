@@ -2,14 +2,14 @@ import React, { Component, cloneElement } from 'react';
 import axios from 'axios';
 import jsonp from 'jsonp';
 import UserProfile from './components/UserProfile';
-
-const API_CALL = 'https://api.instagram.com/v1/users/self/?access_token=';
-
-const CLIENT_ID = '594a8a930ed74c64b1250334bb8465d0';
-
-const FIRST_CALL = 'https://api.instagram.com/oauth/authorize/?client_id=594a8a930ed74c64b1250334bb8465d0&redirect_uri=http://localhost:3000/&response_type=token';
-
-const USER_MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
+import {
+  API_CALL,
+  CLIENT_ID,
+  FIRST_CALL,
+  USER_MEDIA
+} from './constants/config';
+import Card from './components/Card';
+import Cardinfo from './components/CardInfo';
 
 export default class App extends Component {
   constructor() {
@@ -25,7 +25,7 @@ export default class App extends Component {
       userMedia: [],
       access_token: '',
       imageData: [],
-      hashtags: ''
+      hashtags: '',
     };
   }
 
@@ -35,7 +35,6 @@ export default class App extends Component {
     window.location.assign(FIRST_CALL);
     profile();
   }
-
 
   /* This just makes a call to my personal insta account. */
   componentDidMount() {
@@ -47,7 +46,8 @@ export default class App extends Component {
       jsonp(API_CALL + token, null, (error, data) => {
         if(error){
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error)
-        }else{
+        } 
+        else {
           this.setState(
             { username: data.data.username,
               profile_pic: data.data.profile_picture,
@@ -62,72 +62,47 @@ export default class App extends Component {
     }
     
   }
-  
 
-   // console.log('map_image_url', imageInfo.images.thumbnail.url, 'map_image_width', imageInfo.images.thumbnail.width, 'map_image_height', imageInfo.images.thumbnail.height);
-   loadImages = () => {   
+  loadImages = () => {   
     var imageList = [];
     console.log('imagelist:  ', imageList);
     this.state.imageData.forEach( 
       (imageInfo, index) => {
-        imageList.push(<li key={index}><img src={imageInfo.images.thumbnail.url} width={imageInfo.images.thumbnail.width} height={imageInfo.images.thumbnail.height}/></li>);
-        console.log('imageListArray', imageList);
+        imageList.push(<li key={imageInfo.id}><img src={imageInfo.images.thumbnail.url}></img></li>);
       }
     );
     return <ul>{ imageList }</ul>
   };
-  
+
   getUserMedia = (event) => {
     event.preventDefault();
-    //this.setState({loading: true}) // happens when user clicks button = 
     jsonp(USER_MEDIA + this.state.access_token, null, (error, data) => {
       if(error){
         console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
-        //this.setState({loading: false})
+        this.setState({loading: false});
       }else{ 
-        this.setState({imageData: data.data });// gets set after data comes back
+        this.setState({imageData: data.data }); // gets set after data comes back
         console.log('imageDateState: ', this.state.imageData);
-        // console.log('images: ', this.state.imageData[4].images.standard_resolution.url);
-        // console.log('height: ', this.state.imageData[4].images.standard_resolution.height);
-        // console.log('width: ', this.state.imageData[4].images.standard_resolution.width);
-        // console.log('image_URL: ', this.state.imageData[4].images.standard_resolution.url);
         loadImages();
       }
     });
   }
 
+    showHideButtonText = () => {
+      if(this.state.access_token != '') {
 
+        const buttonText = this.state.loading ? "loading..." : "get User media"
+        return <button onClick={ this.getUserMedia } >{ buttonText }</button>
 
-  renderItems() {
-    let list = [];
-    let colorIndex = 0;
-
-    this.state.items.forEach((item, index) => {
-      colorIndex = colorIndex >= this.colors.length ? 0 : colorIndex;
-      const styles = { color: this.colors[colorIndex] };
-      list.push(<li key={index} style={styles}>{ item }</li>);
-      colorIndex++;
-    });
-
-    return <ul>{ list }</ul>;
-  }
-
-
-
-    // showHideButton = () => {
-    //   if(this.state.access_token != '') {
-    //     const buttonText = this.state.loading ? "loading..." : "get User media"
-    //     return <button onClick={ this.getUserMedia } >{ buttonText }</button>
-
-    //   }
-    //   return <p>Did not work</p>
-    //}
+      }
+      return <p>Did not work</p>
+    }
 
     profile = () => {
       if(this.state.access_token != '') { 
         const { username, profile_pic, bio, follows, following } = this.state;
         return (
-          <div>
+          <div className="row" >
             <UserProfile 
               profile_pic={profile_pic}
               username={username}
@@ -135,7 +110,7 @@ export default class App extends Component {
               following={following}
               bio={bio}
             />
-            <button onClick={this.getUserMedia}>Load User Images</button>
+            <button className="btn btn-lg btn-primary" onClick={this.getUserMedia}>Load User Images</button>
           </div>
         );
       }
@@ -144,14 +119,13 @@ export default class App extends Component {
       }
     };
 
-
 	render() {
     console.log('Props: ', this.props);
       return (
         <div> 
-          <button target="_blank" onClick={this.handleFirstSubmit}>Click to make Insta submit</button>
-          { this.profile() }
-          { this.loadImages() }
+          <button target="_blank" onClick={this.handleFirstSubmit}>Insta Time</button>
+          <div className="row">{ this.profile() }</div>
+          <div className="row">{ this.loadImages() }</div>
         </div>
       );
     }
