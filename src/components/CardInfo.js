@@ -1,13 +1,18 @@
 import React from 'react';
 
-const CardInfo = ({ imageUrls }) => {
-    const { url, comments, hashtags, likes } = this.props;
+const Card = ({ urlLink }) => {
     return (
         <div>
-        <img src={ imageUrls } width={width} height={height}></img>
-            <div>yayayyayayaa</div>
-            <div>yeyeyeyeyeyey</div>
+            <div>
+                <img src={urlLink}/> 
+            </div>
+            <div>
+                <div> User likes will go here</div>
+                <div> Caption will go here</div>
+            </div>
         </div>
     );
 }
-export default CardInfo;
+export default Card;
+
+

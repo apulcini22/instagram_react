@@ -7,8 +7,9 @@ import {
   CLIENT_ID,
   FIRST_CALL,
   USER_MEDIA
-} from './constants/config';
-import Card from './components/Card';
+} from '../config';
+import Button from './components/constants/Card';
+import Card from './components/constants/Card';
 import Cardinfo from './components/CardInfo';
 
 export default class App extends Component {
@@ -29,16 +30,19 @@ export default class App extends Component {
     };
   }
 
+ 
+    handleFirstSubmit = (e) => {
+      e.preventDefault();
+      if(this.state.access_token === '') {
+        window.location.assign(FIRST_CALL);
+        profile();
+      }
+    }
 
-  handleFirstSubmit = (e) => {
-    e.preventDefault();
-    window.location.assign(FIRST_CALL);
-    profile();
-  }
 
   /* This just makes a call to my personal insta account. */
   componentDidMount() {
-    console.log(this.state);
+    console.log('Logs on first Mount: ', this.state);
     if(window.location.href.indexOf("access_token=")>-1) {
       const token = window.location.href.split("access_token=")[1].trim();
       this.setState({ access_token: token });
@@ -65,10 +69,10 @@ export default class App extends Component {
 
   loadImages = () => {   
     var imageList = [];
-    console.log('imagelist:  ', imageList);
+    // console.log('imagelist:  ', imageList);
     this.state.imageData.forEach( 
       (imageInfo, index) => {
-        imageList.push(<li key={imageInfo.id}><img src={imageInfo.images.thumbnail.url}></img></li>);
+        imageList.push(<li key={index}><Card><Cardinfo /></Card></li>);
       }
     );
     return <ul>{ imageList }</ul>
@@ -82,27 +86,26 @@ export default class App extends Component {
         this.setState({loading: false});
       }else{ 
         this.setState({imageData: data.data }); // gets set after data comes back
-        console.log('imageDateState: ', this.state.imageData);
+        console.log('Logs the imageDateState: ', this.state.imageData);
         loadImages();
       }
     });
   }
 
-    showHideButtonText = () => {
-      if(this.state.access_token != '') {
-
-        const buttonText = this.state.loading ? "loading..." : "get User media"
-        return <button onClick={ this.getUserMedia } >{ buttonText }</button>
-
-      }
-      return <p>Did not work</p>
-    }
+    // showHideButtonText = () => {
+    //   if(this.state.access_token != '') {
+    //     this.state.loading = true;
+    //     const buttonText = this.state.loading ? "loading..." : "get User media";
+    //     return <button onClick={ this.getUserMedia } >{ buttonText }</button>
+    //   }
+    //   return <p>Did not work</p>
+    // }
 
     profile = () => {
       if(this.state.access_token != '') { 
         const { username, profile_pic, bio, follows, following } = this.state;
         return (
-          <div className="row" >
+          <div>
             <UserProfile 
               profile_pic={profile_pic}
               username={username}
@@ -110,7 +113,7 @@ export default class App extends Component {
               following={following}
               bio={bio}
             />
-            <button className="btn btn-lg btn-primary" onClick={this.getUserMedia}>Load User Images</button>
+            <Button className="btn btn-lg btn-default" onClick={this.getUserMedia}>Load User Images</Button>
           </div>
         );
       }
@@ -120,15 +123,17 @@ export default class App extends Component {
     };
 
 	render() {
-    console.log('Props: ', this.props);
+    console.log('Log Props: ', this.props);
       return (
-        <div> 
-          <button target="_blank" onClick={this.handleFirstSubmit}>Insta Time</button>
+        <div className="container" > 
+          <Button 
+            className="btn btn-outline-default waves-effect" 
+            placeholder="Some text will state here" 
+            // eventHandler={this.handleFirstSubmit} 
+          />
           <div className="row">{ this.profile() }</div>
           <div className="row">{ this.loadImages() }</div>
         </div>
       );
     }
-}
-
-
+};

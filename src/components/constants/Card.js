@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Card = ({ url, width, height }) => {
+const Card = ({ children }) => {
     console.log('Card objects: ', imageInfo.images.thumbnail.props)
     return (
         <div>
