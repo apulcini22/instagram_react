@@ -15032,6 +15032,24 @@ var App = function (_Component) {
       profile();
     };
 
+    _this.loadImages = function () {
+      var imageList = [];
+      console.log('imagelist:  ', imageList);
+      _this.state.imageData.forEach(function (imageInfo, index) {
+        imageList.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'li',
+          { key: index },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: imageInfo.images.thumbnail.url, width: imageInfo.images.thumbnail.width, height: imageInfo.images.thumbnail.height })
+        ));
+        console.log('imageListArray', imageList);
+      });
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'ul',
+        null,
+        imageList
+      );
+    };
+
     _this.getUserMedia = function (event) {
       event.preventDefault();
       //this.setState({loading: true}) // happens when user clicks button = 
@@ -15040,8 +15058,13 @@ var App = function (_Component) {
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
           //this.setState({loading: false})
         } else {
-          _this.setState({ userMedia: data.data }); // gets set after data comes back
-          console.log('media state: ', _this.state.userMedia);
+          _this.setState({ imageData: data.data }); // gets set after data comes back
+          console.log('imageDateState: ', _this.state.imageData);
+          // console.log('images: ', this.state.imageData[4].images.standard_resolution.url);
+          // console.log('height: ', this.state.imageData[4].images.standard_resolution.height);
+          // console.log('width: ', this.state.imageData[4].images.standard_resolution.width);
+          // console.log('image_URL: ', this.state.imageData[4].images.standard_resolution.url);
+          loadImages();
         }
       });
     };
@@ -15068,7 +15091,7 @@ var App = function (_Component) {
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
             { onClick: _this.getUserMedia },
-            'Get User Info'
+            'Load User Images'
           )
         );
       } else {
@@ -15089,7 +15112,9 @@ var App = function (_Component) {
       followers: 0,
       loading: false,
       userMedia: [],
-      access_token: ''
+      access_token: '',
+      imageData: [],
+      hashtags: ''
     };
     return _this;
   }
@@ -15123,6 +15148,34 @@ var App = function (_Component) {
       }
     }
 
+    // console.log('map_image_url', imageInfo.images.thumbnail.url, 'map_image_width', imageInfo.images.thumbnail.width, 'map_image_height', imageInfo.images.thumbnail.height);
+
+  }, {
+    key: 'renderItems',
+    value: function renderItems() {
+      var _this3 = this;
+
+      var list = [];
+      var colorIndex = 0;
+
+      this.state.items.forEach(function (item, index) {
+        colorIndex = colorIndex >= _this3.colors.length ? 0 : colorIndex;
+        var styles = { color: _this3.colors[colorIndex] };
+        list.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'li',
+          { key: index, style: styles },
+          item
+        ));
+        colorIndex++;
+      });
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'ul',
+        null,
+        list
+      );
+    }
+
     // showHideButton = () => {
     //   if(this.state.access_token != '') {
     //     const buttonText = this.state.loading ? "loading..." : "get User media"
@@ -15130,11 +15183,12 @@ var App = function (_Component) {
 
     //   }
     //   return <p>Did not work</p>
-    // }
+    //}
 
   }, {
     key: 'render',
     value: function render() {
+      console.log('Props: ', this.props);
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
@@ -15143,7 +15197,8 @@ var App = function (_Component) {
           { target: '_blank', onClick: this.handleFirstSubmit },
           'Click to make Insta submit'
         ),
-        this.profile()
+        this.profile(),
+        this.loadImages()
       );
     }
   }]);

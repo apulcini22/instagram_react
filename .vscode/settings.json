@@ -1,14 +1,14 @@
 {
     "workbench.iconTheme": "vscode-icons",
     "workbench.colorTheme": "Monokai",
-    "editor.fontSize": 14,
+    "editor.fontSize": 16,
     "editor.tabCompletion": true,
     "todohighlight.isEnable": false,
     "todohighlight.isCaseSensitive": false,
     "todohighlight.highlightWholeLine": false,
     "vsicons.dontShowNewVersionMessage": true,
     "editor.fontSize": 18,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -2,
     "editor.minimap.enabled": false,
     "editor.multiCursorModifier": "ctrlCmd",
     "workbench.startupEditor": "newUntitledFile",
@@ -31,5 +31,11 @@
     "workbench.colorCustomizations": {
         "editor.selectionBackground": "#135564",
         "editor.selectionHighlightBackground": "#135564"
-    }
+    },
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.fontSize": 18,
+    "html.format.indentHandlebars": true,
+    "html.format.indentInnerHtml": true,
+    "editor.wrappingIndent": "indent",
+    "terminal.integrated.lineHeight": 1.3
 }

@@ -23,7 +23,9 @@ export default class App extends Component {
       followers: 0,
       loading: false,
       userMedia: [],
-      access_token: ''
+      access_token: '',
+      imageData: [],
+      hashtags: ''
     };
   }
 
@@ -61,6 +63,20 @@ export default class App extends Component {
     
   }
   
+
+   // console.log('map_image_url', imageInfo.images.thumbnail.url, 'map_image_width', imageInfo.images.thumbnail.width, 'map_image_height', imageInfo.images.thumbnail.height);
+   loadImages = () => {   
+    var imageList = [];
+    console.log('imagelist:  ', imageList);
+    this.state.imageData.forEach( 
+      (imageInfo, index) => {
+        imageList.push(<li key={index}><img src={imageInfo.images.thumbnail.url} width={imageInfo.images.thumbnail.width} height={imageInfo.images.thumbnail.height}/></li>);
+        console.log('imageListArray', imageList);
+      }
+    );
+    return <ul>{ imageList }</ul>
+  };
+  
   getUserMedia = (event) => {
     event.preventDefault();
     //this.setState({loading: true}) // happens when user clicks button = 
@@ -69,11 +85,33 @@ export default class App extends Component {
         console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
         //this.setState({loading: false})
       }else{ 
-        this.setState({userMedia: data.data }) // gets set after data comes back
-        console.log('media state: ', this.state.userMedia);
+        this.setState({imageData: data.data });// gets set after data comes back
+        console.log('imageDateState: ', this.state.imageData);
+        // console.log('images: ', this.state.imageData[4].images.standard_resolution.url);
+        // console.log('height: ', this.state.imageData[4].images.standard_resolution.height);
+        // console.log('width: ', this.state.imageData[4].images.standard_resolution.width);
+        // console.log('image_URL: ', this.state.imageData[4].images.standard_resolution.url);
+        loadImages();
       }
-    })
+    });
   }
+
+
+
+  renderItems() {
+    let list = [];
+    let colorIndex = 0;
+
+    this.state.items.forEach((item, index) => {
+      colorIndex = colorIndex >= this.colors.length ? 0 : colorIndex;
+      const styles = { color: this.colors[colorIndex] };
+      list.push(<li key={index} style={styles}>{ item }</li>);
+      colorIndex++;
+    });
+
+    return <ul>{ list }</ul>;
+  }
+
 
 
     // showHideButton = () => {
@@ -83,7 +121,7 @@ export default class App extends Component {
 
     //   }
     //   return <p>Did not work</p>
-    // }
+    //}
 
     profile = () => {
       if(this.state.access_token != '') { 
@@ -97,7 +135,7 @@ export default class App extends Component {
               following={following}
               bio={bio}
             />
-            <button onClick={this.getUserMedia}>Get User Info</button>
+            <button onClick={this.getUserMedia}>Load User Images</button>
           </div>
         );
       }
@@ -108,10 +146,12 @@ export default class App extends Component {
 
 
 	render() {
+    console.log('Props: ', this.props);
       return (
         <div> 
           <button target="_blank" onClick={this.handleFirstSubmit}>Click to make Insta submit</button>
           { this.profile() }
+          { this.loadImages() }
         </div>
       );
     }
