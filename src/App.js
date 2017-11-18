@@ -4,13 +4,11 @@ import jsonp from 'jsonp';
 import UserProfile from './components/UserProfile';
 import {
   API_CALL,
-  CLIENT_ID,
   FIRST_CALL,
   USER_MEDIA
 } from '../config';
 import Button from './components/constants/button';
 import Card from './components/constants/Card';
-import CardInfo from './components/CardInfo';
 
 export default class App extends Component {
   constructor() {
@@ -30,28 +28,9 @@ export default class App extends Component {
     };
   }
 
-  
-
-  StartApp = () => {
-    if(this.state.access_token === '') { 
-      let buttonText = !this.state.loading ? "Get User Profile" : "Get User Media";
-      return (
-        <Button 
-        className="btn btn-outline-default waves-effect" 
-        placeholder={buttonText} 
-        eventHandler={this.handleFirstSubmit} 
-        />
-      );  
-    }
-  }
- 
-    handleFirstSubmit = (e) => {
-      e.preventDefault();
-      window.location.assign(FIRST_CALL);
-      this.profile();
-    }
-
-  /* This just makes a call to my personal insta account. */
+  /****************************************************************************************************
+  Loads up once component has mounted and invoked StartApp function which shows  a button to enter
+  ****************************************************************************************************/
   componentDidMount() {
     this.StartApp();
     if(window.location.href.indexOf("access_token=")>-1) {
@@ -72,34 +51,38 @@ export default class App extends Component {
           })
         }
       })
+    } 
+  }
+
+  /**********************************************************************
+  This just makes a call to my personal instagram account.
+  ***********************************************************************/
+  StartApp = () => {
+    /* Access_token should be '' on start up */ 
+    if(this.state.access_token === '') { 
+      let buttonText = !this.state.loading ? "Get User Profile" : "Get User Media";
+      return (
+        <Button 
+        className="btn btn-outline-default waves-effect" 
+        placeholder={buttonText} 
+        eventHandler={this.handleFirstSubmit} 
+        />
+      );  
     }
-    
   }
 
-  loadImages = () => {   
-    var imageList = [];
-    this.state.imageData.forEach( 
-      (imageInfo, index) => {
-        imageList.push(<li key={index}><CardInfo urlLink="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" text={ index }/></li>);
-      }
-    );
-    return <ul>{ imageList }</ul>
-  };
-
-  getUserMedia = (event) => {
-    event.preventDefault();
-    jsonp(USER_MEDIA + this.state.access_token, null, (error, data) => {
-      if(error){
-        console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
-        this.setState({loading: false});
-      }else{ 
-        this.setState({imageData: data.data }); // gets set after data comes back
-        console.log('Logs the imageDateState: ', this.state.imageData);
-        this.loadImages();
-      }
-    });
+  /****************************************************************
+  You have to sign into Instagram adn get an access key to proceed.
+  *****************************************************************/  
+  handleFirstSubmit = (e) => {
+    e.preventDefault();
+    window.location.assign(FIRST_CALL);
+    this.profile();
   }
 
+  /**********************************************************************
+  Loads user Profile once you have clicked on "Get User Profile" 
+  ***********************************************************************/
   profile = () => {
     if(this.state.access_token != '') { 
       const { username, profile_pic, bio, follows, following } = this.state;
@@ -125,14 +108,56 @@ export default class App extends Component {
     }
   };
 
+  /**********************************************************************
+  This event occurs (function runs) once the user has clicked "Get User Media"
+  ***********************************************************************/
+  getUserMedia = (event) => {
+    event.preventDefault();
+    jsonp(USER_MEDIA + this.state.access_token, null, (error, data) => {
+      if(error){
+        console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
+        this.setState({loading: false});
+      }else{ 
+        this.setState({imageData: data.data }); // gets set after data comes back
+        console.log('Log imageDateState: ', this.state.imageData);
+        this.loadImages();
+      }
+    });
+  }
+
+  /**********************************************************************
+  loadImages function Renders Image List
+  ***********************************************************************/
+  loadImages = () => {   
+    var imageList = [];
+    this.state.imageData.forEach( 
+      (imageInfo, index) => {
+        const { link } = imageInfo;
+        const { text } = imageInfo.caption;
+        const { url, width, height } = imageInfo.images.low_resolution;
+        imageList.push(
+          <li style={styles.list} key={index}>
+            <Card src={url} width={width} height={height} caption={text} postLink={link}/>
+          </li>);
+      });
+      return <ul>{ imageList } </ul>
+  };
+
 	render() {
     console.log('Log Props: ', this.props);
       return (
-        <div className="container" >  
+        <div className="container">  
           <div className="row">{ this.StartApp() }</div>
           <div className="row">{ this.profile() }</div>
-          <div className="row">{ this.loadImages() }</div>
+          <div>{ this.loadImages() }</div>
         </div>
       );
     }
 };
+
+const styles = {
+  list: {
+    listStyle: 'none', 
+    padding: 10
+  }
+}
