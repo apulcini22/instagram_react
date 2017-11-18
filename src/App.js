@@ -8,9 +8,9 @@ import {
   FIRST_CALL,
   USER_MEDIA
 } from '../config';
-import Button from './components/constants/Card';
+import Button from './components/constants/button';
 import Card from './components/constants/Card';
-import Cardinfo from './components/CardInfo';
+import CardInfo from './components/CardInfo';
 
 export default class App extends Component {
   constructor() {
@@ -30,37 +30,46 @@ export default class App extends Component {
     };
   }
 
+  
+
+  StartApp = () => {
+    if(this.state.access_token === '') { 
+      let buttonText = !this.state.loading ? "Get User Profile" : "Get User Media";
+      return (
+        <Button 
+        className="btn btn-outline-default waves-effect" 
+        placeholder={buttonText} 
+        eventHandler={this.handleFirstSubmit} 
+        />
+      );  
+    }
+  }
  
     handleFirstSubmit = (e) => {
       e.preventDefault();
-      if(this.state.access_token === '') {
-        window.location.assign(FIRST_CALL);
-        profile();
-      }
+      window.location.assign(FIRST_CALL);
+      this.profile();
     }
-
 
   /* This just makes a call to my personal insta account. */
   componentDidMount() {
-    console.log('Logs on first Mount: ', this.state);
+    this.StartApp();
     if(window.location.href.indexOf("access_token=")>-1) {
       const token = window.location.href.split("access_token=")[1].trim();
       this.setState({ access_token: token });
-      // console.log(this.state);
       jsonp(API_CALL + token, null, (error, data) => {
         if(error){
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error)
         } 
         else {
-          this.setState(
-            { username: data.data.username,
-              profile_pic: data.data.profile_picture,
-              bio: data.data.bio,
-              numbOfImages: data.data.counts.media,
-              follows: data.data.counts.follows,
-              followers: data.data.counts.followed_by
-            }
-          )
+          this.setState({ 
+            username: data.data.username,
+            profile_pic: data.data.profile_picture,
+            bio: data.data.bio,
+            numbOfImages: data.data.counts.media,
+            follows: data.data.counts.follows,
+            followers: data.data.counts.followed_by
+          })
         }
       })
     }
@@ -69,10 +78,9 @@ export default class App extends Component {
 
   loadImages = () => {   
     var imageList = [];
-    // console.log('imagelist:  ', imageList);
     this.state.imageData.forEach( 
       (imageInfo, index) => {
-        imageList.push(<li key={index}><Card><Cardinfo /></Card></li>);
+        imageList.push(<li key={index}><CardInfo urlLink="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" text={ index }/></li>);
       }
     );
     return <ul>{ imageList }</ul>
@@ -87,50 +95,41 @@ export default class App extends Component {
       }else{ 
         this.setState({imageData: data.data }); // gets set after data comes back
         console.log('Logs the imageDateState: ', this.state.imageData);
-        loadImages();
+        this.loadImages();
       }
     });
   }
 
-    // showHideButtonText = () => {
-    //   if(this.state.access_token != '') {
-    //     this.state.loading = true;
-    //     const buttonText = this.state.loading ? "loading..." : "get User media";
-    //     return <button onClick={ this.getUserMedia } >{ buttonText }</button>
-    //   }
-    //   return <p>Did not work</p>
-    // }
-
-    profile = () => {
-      if(this.state.access_token != '') { 
-        const { username, profile_pic, bio, follows, following } = this.state;
-        return (
-          <div>
-            <UserProfile 
-              profile_pic={profile_pic}
-              username={username}
-              follows={follows}
-              following={following}
-              bio={bio}
-            />
-            <Button className="btn btn-lg btn-default" onClick={this.getUserMedia}>Load User Images</Button>
-          </div>
-        );
-      }
-      else {
-          <p>Nope</p>
-      }
-    };
+  profile = () => {
+    if(this.state.access_token != '') { 
+      const { username, profile_pic, bio, follows, following } = this.state;
+      return (
+        <div>
+          <UserProfile 
+            profile_pic={profile_pic}
+            username={username}
+            follows={follows}
+            following={following}
+            bio={bio}
+          />
+          <Button 
+            className="btn btn-outline-default waves-effect" 
+            placeholder="Get User Media"
+            eventHandler={this.getUserMedia} 
+          />
+        </div>
+      );
+    }
+    else {
+      <p>Nope</p>
+    }
+  };
 
 	render() {
     console.log('Log Props: ', this.props);
       return (
-        <div className="container" > 
-          <Button 
-            className="btn btn-outline-default waves-effect" 
-            placeholder="Some text will state here" 
-            // eventHandler={this.handleFirstSubmit} 
-          />
+        <div className="container" >  
+          <div className="row">{ this.StartApp() }</div>
           <div className="row">{ this.profile() }</div>
           <div className="row">{ this.loadImages() }</div>
         </div>

@@ -1,18 +1,17 @@
 import React from 'react';
 
-const Card = ({ urlLink }) => {
+const CardInfo = ({ urlLink, text }) => {
     return (
-        <div>
-            <div>
-                <img src={urlLink}/> 
-            </div>
-            <div>
-                <div> User likes will go here</div>
-                <div> Caption will go here</div>
+        <div className="card">
+            <img className="img-fluid"  src={ urlLink } alt="Card image cap" width="150" height="150"/>
+            <div className="card-body">
+                <h4 className="card-title">{ text }</h4>
+                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" className="btn btn-primary">Button</a>
             </div>
         </div>
     );
 }
-export default Card;
+export default CardInfo;
 
 
