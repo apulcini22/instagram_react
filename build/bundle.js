@@ -15083,8 +15083,8 @@ var App = function (_Component) {
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
           _this.setState({ loading: false });
         } else {
-          _this.setState({ imageData: data.data }); // gets set after data comes back
-          console.log('Log imageDateState: ', _this.state.imageData);
+          _this.setState({ cardData: data.data }); // gets set after data comes back
+          console.log('Log Card State: ', _this.state.cardData);
           _this.loadImages();
         }
       });
@@ -15092,18 +15092,21 @@ var App = function (_Component) {
 
     _this.loadImages = function () {
       var imageList = [];
-      _this.state.imageData.forEach(function (imageInfo, index) {
-        var link = imageInfo.link;
-        var text = imageInfo.caption.text;
-        var _imageInfo$images$low = imageInfo.images.low_resolution,
+      _this.state.cardData.forEach(function (imageInfo, index) {
+        var link = imageInfo.link,
+            text = imageInfo.caption.text,
+            _imageInfo$images$low = imageInfo.images.low_resolution,
             url = _imageInfo$images$low.url,
             width = _imageInfo$images$low.width,
             height = _imageInfo$images$low.height;
 
+        var words = text.split("#")[0];
+        !words ? words = "No caption here" : words;
+        console.log(words);
         imageList.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
           { style: styles.list, key: index },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_constants_Card__["a" /* default */], { src: url, width: width, height: height, caption: text, postLink: link })
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_constants_Card__["a" /* default */], { src: url, width: width, height: height, caption: words, postLink: link })
         ));
       });
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -15124,7 +15127,7 @@ var App = function (_Component) {
       loading: false,
       userMedia: [],
       access_token: '',
-      imageData: [],
+      cardData: [],
       hashtags: ''
     };
     return _this;
@@ -15188,7 +15191,6 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('Log Props: ', this.props);
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'container' },
