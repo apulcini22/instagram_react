@@ -15101,7 +15101,7 @@ var App = function (_Component) {
             height = _imageInfo$images$low.height;
 
         var words = text.split("#")[0];
-        !words ? words = "No caption here" : words;
+        words === '' ? "No caption here" : words;
         console.log(words);
         imageList.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
