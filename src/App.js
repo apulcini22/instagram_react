@@ -23,7 +23,7 @@ export default class App extends Component {
       loading: false,
       userMedia: [],
       access_token: '',
-      imageData: [],
+      cardData: [],
       hashtags: '',
     };
   }
@@ -118,8 +118,8 @@ export default class App extends Component {
         console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
         this.setState({loading: false});
       }else{ 
-        this.setState({imageData: data.data }); // gets set after data comes back
-        console.log('Log imageDateState: ', this.state.imageData);
+        this.setState({cardData: data.data }); // gets set after data comes back
+        console.log('Log Card State: ', this.state.cardData);
         this.loadImages();
       }
     });
@@ -130,21 +130,22 @@ export default class App extends Component {
   ***********************************************************************/
   loadImages = () => {   
     var imageList = [];
-    this.state.imageData.forEach( 
+    this.state.cardData.forEach( 
       (imageInfo, index) => {
-        const { link } = imageInfo;
-        const { text } = imageInfo.caption;
-        const { url, width, height } = imageInfo.images.low_resolution;
+         const { link, caption: {text}, images: { low_resolution: { url, width, height } } } = imageInfo;
+         let words = text.split("#")[0];
+         !words ? words = "No caption here" : words;
+         console.log(words);
         imageList.push(
           <li style={styles.list} key={index}>
-            <Card src={url} width={width} height={height} caption={text} postLink={link}/>
-          </li>);
+            <Card src={url} width={width} height={height} caption={words} postLink={link}/>
+          </li>
+        );
       });
       return <ul>{ imageList } </ul>
   };
 
 	render() {
-    console.log('Log Props: ', this.props);
       return (
         <div className="container">  
           <div className="row">{ this.StartApp() }</div>
