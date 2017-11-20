@@ -134,7 +134,7 @@ export default class App extends Component {
       (imageInfo, index) => {
          const { link, caption: {text}, images: { low_resolution: { url, width, height } } } = imageInfo;
          let words = text.split("#")[0];
-         words === '' ? "No caption here" : words;
+         !words ? "No caption here" : words;
          console.log(words);
         imageList.push(
           <li style={styles.list} key={index}>
