@@ -14998,6 +14998,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jsonp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jsonp__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_UserProfile__ = __webpack_require__(240);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__config__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_constants_button__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_constants_Card__ = __webpack_require__(241);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15038,7 +15039,7 @@ var App = function (_Component) {
 
     _this.handleFirstSubmit = function (e) {
       e.preventDefault();
-      window.location.assign(__WEBPACK_IMPORTED_MODULE_4__config__["a" /* FIRST_CALL */]);
+      window.location.assign(__WEBPACK_IMPORTED_MODULE_4__config__["FIRST_CALL"]);
       _this.profile();
     };
 
@@ -15078,7 +15079,7 @@ var App = function (_Component) {
 
     _this.getUserMedia = function (event) {
       event.preventDefault();
-      __WEBPACK_IMPORTED_MODULE_2_jsonp___default()(__WEBPACK_IMPORTED_MODULE_4__config__["b" /* USER_MEDIA */] + _this.state.access_token, null, function (error, data) {
+      __WEBPACK_IMPORTED_MODULE_2_jsonp___default()(__WEBPACK_IMPORTED_MODULE_4__config__["USER_MEDIA"] + _this.state.access_token, null, function (error, data) {
         if (error) {
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
           _this.setState({ loading: false });
@@ -15101,7 +15102,7 @@ var App = function (_Component) {
             height = _imageInfo$images$low.height;
 
         var words = text.split("#")[0];
-        words === '' ? "No caption here" : words;
+        !words ? "No caption here" : words;
         console.log(words);
         imageList.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
@@ -15147,7 +15148,7 @@ var App = function (_Component) {
       if (window.location.href.indexOf("access_token=") > -1) {
         var token = window.location.href.split("access_token=")[1].trim();
         this.setState({ access_token: token });
-        __WEBPACK_IMPORTED_MODULE_2_jsonp___default()(__WEBPACK_IMPORTED_MODULE_4__config__["c" /* API_CALL */] + token, null, function (error, data) {
+        __WEBPACK_IMPORTED_MODULE_2_jsonp___default()(__WEBPACK_IMPORTED_MODULE_4__config__["API_CALL"] + token, null, function (error, data) {
           if (error) {
             console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
           } else {
@@ -16136,18 +16137,9 @@ module.exports = function spread(callback) {
 
 /***/ }),
 /* 238 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return API_CALL; });
-/* unused harmony export CLIENT_ID */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FIRST_CALL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return USER_MEDIA; });
-var API_CALL = 'https://api.instagram.com/v1/users/self/?access_token=';
-var CLIENT_ID = '594a8a930ed74c64b1250334bb8465d0';
-var FIRST_CALL = 'https://api.instagram.com/oauth/authorize/?client_id=594a8a930ed74c64b1250334bb8465d0&redirect_uri=http://localhost:3000/&response_type=token';
-
-var USER_MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/anthonypulcini/webprojects/practice/react_playground/instagram_fun/react_simple_boilerplate/config.js'");
 
 /***/ }),
 /* 239 */
