@@ -3,15 +3,7 @@ import jsonp from 'jsonp';
 import UserProfile from './components/UserProfile';
 import Button from './components/constants/button';
 import Card from './components/constants/Card';
-
-
-const AUTH_CALL = 'https://www.instagram.com/oauth/authorize/?client_id=756c7ecbce2643f99345c90dd9a769ff&redirect_uri=http://localhost:3000/&response_type=token&scope=public_content+likes';
-
-const SELF = 'https://api.instagram.com/v1/users/self/?access_token=';
-
-const MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
-
-const TOKEN = '1140263199.756c7ec.0319c734e3de411db3fdddeaf33c5092';
+import {  AUTH_CALL, MEDIA, SELF } from '../config.js';
 
 export default class App extends Component {
   constructor() {

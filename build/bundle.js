@@ -14319,6 +14319,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_UserProfile__ = __webpack_require__(214);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_constants_button__ = __webpack_require__(216);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_constants_Card__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config_js__ = __webpack_require__(507);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14333,13 +14334,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var AUTH_CALL = 'https://www.instagram.com/oauth/authorize/?client_id=756c7ecbce2643f99345c90dd9a769ff&redirect_uri=http://localhost:3000/&response_type=token&scope=public_content+likes';
-
-var SELF = 'https://api.instagram.com/v1/users/self/?access_token=';
-
-var MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
-
-var TOKEN = '1140263199.756c7ec.0319c734e3de411db3fdddeaf33c5092';
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -14366,7 +14360,7 @@ var App = function (_Component) {
 
     _this.handleFirstSubmit = function (e) {
       e.preventDefault();
-      window.location.assign(AUTH_CALL);
+      window.location.assign(__WEBPACK_IMPORTED_MODULE_5__config_js__["a" /* AUTH_CALL */]);
       _this.profile();
     };
 
@@ -14401,7 +14395,7 @@ var App = function (_Component) {
     _this.getUserMedia = function (event) {
       event.preventDefault();
       // const userId = this.state.access_token.split(".")[0];
-      __WEBPACK_IMPORTED_MODULE_1_jsonp___default()(MEDIA + _this.state.access_token, null, function (error, data) {
+      __WEBPACK_IMPORTED_MODULE_1_jsonp___default()(__WEBPACK_IMPORTED_MODULE_5__config_js__["b" /* MEDIA */] + _this.state.access_token, null, function (error, data) {
         if (error) {
           console.log('ERROR GETTING MEDIA STATE TO LOAD: ', error);
           _this.setState({ loading: false });
@@ -14468,7 +14462,7 @@ var App = function (_Component) {
       if (window.location.href.indexOf("access_token=") > -1) {
         var token = window.location.href.split("access_token=")[1].trim();
         this.setState({ access_token: token });
-        __WEBPACK_IMPORTED_MODULE_1_jsonp___default()(SELF + token, null, function (error, data) {
+        __WEBPACK_IMPORTED_MODULE_1_jsonp___default()(__WEBPACK_IMPORTED_MODULE_5__config_js__["c" /* SELF */] + token, null, function (error, data) {
           if (error) {
             console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
           } else {
@@ -33837,6 +33831,23 @@ module.exports = quoteAttributeValueForBrowser;
 var ReactMount = __webpack_require__(194);
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ }),
+/* 507 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_CALL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return SELF; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return MEDIA; });
+/* unused harmony export TOKEN */
+var AUTH_CALL = 'https://www.instagram.com/oauth/authorize/?client_id=756c7ecbce2643f99345c90dd9a769ff&redirect_uri=http://localhost:3000/&response_type=token&scope=public_content+likes';
+
+var SELF = 'https://api.instagram.com/v1/users/self/?access_token=';
+
+var MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
+
+var TOKEN = '1140263199.756c7ec.0319c734e3de411db3fdddeaf33c5092';
 
 /***/ })
 /******/ ]);
