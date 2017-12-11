@@ -4,7 +4,7 @@
     "editor.fontSize": 24,
     "editor.tabCompletion": true,
     "vsicons.dontShowNewVersionMessage": true,
-    "window.zoomLevel": -1,
+    "window.zoomLevel": -3,
     "editor.minimap.enabled": false,
     "editor.multiCursorModifier": "ctrlCmd",
     "workbench.startupEditor": "newUntitledFile",

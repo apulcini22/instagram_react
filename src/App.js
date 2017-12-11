@@ -1,14 +1,17 @@
-import React, { Component, cloneElement } from 'react';
-import axios from 'axios';
+import React, { Component } from 'react';
 import jsonp from 'jsonp';
 import UserProfile from './components/UserProfile';
-import {
-  API_CALL,
-  FIRST_CALL,
-  USER_MEDIA
-} from '../config';
 import Button from './components/constants/button';
 import Card from './components/constants/Card';
+
+
+const AUTH_CALL = 'https://www.instagram.com/oauth/authorize/?client_id=756c7ecbce2643f99345c90dd9a769ff&redirect_uri=http://localhost:3000/&response_type=token&scope=public_content+likes';
+
+const SELF = 'https://api.instagram.com/v1/users/self/?access_token=';
+
+const MEDIA = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
+
+const TOKEN = '1140263199.756c7ec.0319c734e3de411db3fdddeaf33c5092';
 
 export default class App extends Component {
   constructor() {
@@ -25,6 +28,7 @@ export default class App extends Component {
       access_token: '',
       cardData: [],
       hashtags: '',
+      loaded: false
     };
   }
 
@@ -36,7 +40,7 @@ export default class App extends Component {
     if(window.location.href.indexOf("access_token=")>-1) {
       const token = window.location.href.split("access_token=")[1].trim();
       this.setState({ access_token: token });
-      jsonp(API_CALL + token, null, (error, data) => {
+      jsonp(SELF + token, null, (error, data) => {
         if(error){
           console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error)
         } 
@@ -50,7 +54,8 @@ export default class App extends Component {
             followers: data.data.counts.followed_by
           })
         }
-      })
+        console.log(`DATA: `, data.data.counts.followed_by);
+      });
     } 
   }
 
@@ -62,6 +67,7 @@ export default class App extends Component {
     if(this.state.access_token === '') { 
       let buttonText = !this.state.loading ? "Get User Profile" : "Get User Media";
       return (
+        // TODO: Move this button and make a new homepage
         <Button 
         className="btn btn-outline-default waves-effect" 
         placeholder={buttonText} 
@@ -72,11 +78,11 @@ export default class App extends Component {
   }
 
   /****************************************************************
-  You have to sign into Instagram adn get an access key to proceed.
+  You have to sign into Instagram and get an access key to proceed.
   *****************************************************************/  
   handleFirstSubmit = (e) => {
     e.preventDefault();
-    window.location.assign(FIRST_CALL);
+    window.location.assign(AUTH_CALL);
     this.profile();
   }
 
@@ -85,14 +91,14 @@ export default class App extends Component {
   ***********************************************************************/
   profile = () => {
     if(this.state.access_token != '') { 
-      const { username, profile_pic, bio, follows, following } = this.state;
+      const { username, profile_pic, bio, follows, followers } = this.state;
       return (
-        <div>
+        <div className="text-center" >
           <UserProfile 
             profile_pic={profile_pic}
             username={username}
             follows={follows}
-            following={following}
+            followers={followers}
             bio={bio}
           />
           <Button 
@@ -103,46 +109,41 @@ export default class App extends Component {
         </div>
       );
     }
-    else {
-      <p>Nope</p>
-    }
   };
 
-  /**********************************************************************
+  /******************************************************************************
   This event occurs (function runs) once the user has clicked "Get User Media"
-  ***********************************************************************/
+  *******************************************************************************/
   getUserMedia = (event) => {
     event.preventDefault();
-    jsonp(USER_MEDIA + this.state.access_token, null, (error, data) => {
+    // const userId = this.state.access_token.split(".")[0];
+    jsonp( MEDIA + this.state.access_token, null, (error, data) => {
       if(error){
-        console.log('Holllyyyyy ssshhhhhiiiitttttttt: ', error);
+    console.log('ERROR GETTING MEDIA STATE TO LOAD: ', error);
         this.setState({loading: false});
       }else{ 
-        this.setState({cardData: data.data }); // gets set after data comes back
-        console.log('Log Card State: ', this.state.cardData);
+        this.setState({cardData: data.data, loaded: true }); // gets set after data comes back
+        // TODO: hide button once clicked on  
         this.loadImages();
       }
     });
   }
 
-  /**********************************************************************
+  /**************************************************************************
   loadImages function Renders Image List
-  ***********************************************************************/
+  ***************************************************************************/
   loadImages = () => {   
     var imageList = [];
     this.state.cardData.forEach( 
       (imageInfo, index) => {
-         const { link, caption: {text}, images: { low_resolution: { url, width, height } } } = imageInfo;
-         let words = text.split("#")[0];
-         !words ? "No caption here" : words;
-         console.log(words);
+         const { link, images: { low_resolution: { url, width, height } }, likes: { count } } = imageInfo;
         imageList.push(
-          <li style={styles.list} key={index}>
-            <Card src={url} width={width} height={height} caption={words} postLink={link}/>
+          <li className="col-md-4" style={{ listStyle: 'none', padding: 10 }}  key={index}>
+            <Card src={url} postLink={link} imgLikes={count}/>
           </li>
         );
       });
-      return <ul>{ imageList } </ul>
+      return <ul className="row" >{ imageList } </ul>
   };
 
 	render() {
@@ -155,10 +156,3 @@ export default class App extends Component {
       );
     }
 };
-
-const styles = {
-  list: {
-    listStyle: 'none', 
-    padding: 10
-  }
-}

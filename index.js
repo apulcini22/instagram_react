@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 const SERVER = {
 	app: express(),
-	port: process.env.PORT || 3000,
+	port: 3000, // process.env.PORT || 
 	static: function(req, res) {
 		res.sendFile('/build/index.html');
 	}
