@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.1",
-    "express": "^4.14.1",
+    "express": "^4.17.3",
     "jsonp": "^0.2.1",
     "path": "^0.12.7",
     "react-emojione": "^5.0.0"
